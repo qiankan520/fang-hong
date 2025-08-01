@@ -90,11 +90,12 @@
         }
         
         .finger-pointer {
-            position: absolute;
-            top: -10px;
-            right: -20px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
             font-size: 60px;
             animation: bounce 2s infinite;
+            z-index: 1000;
         }
         
         @keyframes bounce {
@@ -197,8 +198,7 @@
     
     <div class="container">
         <div class="header">
-            <h1>点击右上角 ⋯⋯ 在浏览器打开</h1>
-            <p>苹果路径 ⚪ 安卓路径 ⚪ 浏览器</p>
+            <h1>点击右上角 ⋯⋯ 在浏览器打开</h1>            
         </div>
         
         <div class="main-content">
@@ -244,11 +244,11 @@
     var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
 
     // 显示当前URL
-    document.getElementById('current-url').textContent = window.location.href;
+    document.getElementById('current-url').textContent = 'https://ems.baduka.top';
     
     // 复制URL功能
     function copyUrl() {
-        var currentUrl = window.location.href;
+        var currentUrl = 'https://ems.baduka.top';
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(currentUrl).then(function() {
                 showCopySuccess();
@@ -299,12 +299,11 @@
     } else {
         // 不是微信客户端，直接可以访问链接
         if (urlParmStr == url){
-            urlParmStr = "https://www.yiove.com";
+            urlParmStr = "https://ems.baduka.top";
         }
         console.log(urlParmStr);
         location.href=urlParmStr;
     }
-</script>
-    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"K8YSQIj3WDtj9gG6",ck:"K8YSQIj3WDtj9gG6"})</script>
+</script>    
 </body>
 </html>
