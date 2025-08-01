@@ -5,7 +5,7 @@
 </head>
 <body>
     <script>
-        // 解密后的代码
+        // 完整解密后的代码 - 包含跳转功能
         
         // 防止右键菜单
         document.body.oncontextmenu = function() {
@@ -92,11 +92,118 @@
             top.location.href = window.location.href;
         }
         
-        // 原始混淆代码的功能：
-        // 1. 禁用右键菜单、文本选择和某些快捷键
-        // 2. 隐藏页面中的链接，只有在获得焦点时才显示真实链接
-        // 3. 防止页面在 iframe 中运行
-        // 4. 这是一个防红页面的保护机制
+        // 关键部分：动态生成页面内容（包含跳转功能）
+        // 获取URL参数中的目标地址
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // 动态生成跳转页面内容
+        var targetUrl = getUrlParameter('url') || getUrlParameter('u') || 'https://www.baidu.com';
+        var countdown = 5;
+        
+        // 生成页面HTML
+        var pageHTML = `
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    padding: 50px;
+                    background-color: #f0f2f5;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background: white;
+                    padding: 40px;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }
+                .countdown {
+                    font-size: 24px;
+                    color: #333;
+                    margin: 20px 0;
+                }
+                .url {
+                    font-size: 18px;
+                    color: #1890ff;
+                    margin: 20px 0;
+                    word-break: break-all;
+                }
+                .btn {
+                    background-color: #52c41a;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    margin: 20px 0;
+                }
+                .btn:hover {
+                    background-color: #389e0d;
+                }
+                .disclaimer {
+                    font-size: 12px;
+                    color: #666;
+                    margin-top: 30px;
+                    line-height: 1.5;
+                }
+                .loading {
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    border: 3px solid #f3f3f3;
+                    border-top: 3px solid #3498db;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin-right: 10px;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            </style>
+            <div class="container">
+                <div class="loading"></div>
+                <div class="countdown" id="countdown">${countdown}秒后将要进入</div>
+                <div class="url">${targetUrl}</div>
+                <button class="btn" onclick="jumpNow()">立即跳转</button>
+                <div class="disclaimer">
+                    本站不对该网页内容承担任何责任，请小心填写账号、密码信息。<br>
+                    This site does not assume any responsibility for the content of this page, please fill in the account and password information carefully.<br><br>
+                    反馈群:598393246<br>
+                    Feedback groups:598393246
+                </div>
+            </div>
+            <script>
+                var targetUrl = '${targetUrl}';
+                var countdown = ${countdown};
+                
+                function jumpNow() {
+                    window.location.href = targetUrl;
+                }
+                
+                function updateCountdown() {
+                    if (countdown > 0) {
+                        document.getElementById('countdown').textContent = countdown + '秒后将要进入';
+                        countdown--;
+                        setTimeout(updateCountdown, 1000);
+                    } else {
+                        jumpNow();
+                    }
+                }
+                
+                // 开始倒计时
+                setTimeout(updateCountdown, 1000);
+            </script>
+        `;
+        
+        // 将生成的HTML写入页面
+        document.write(pageHTML);
         
     </script>
 </body>
