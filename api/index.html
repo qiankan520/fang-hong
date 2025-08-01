@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <meta itemprop="name" content="防红接口直链"/>
+    <meta itemprop="name" content="防红接口直链--fanghong.zeabur.app"/>
     <meta itemprop="image" content="https://img-blog.csdnimg.cn/direct/ddb610a71d6b4b90a315c2d58aee2d6a.png" />
     <meta name="description" itemprop="description" content="即将进入网址" />
 </head>
@@ -246,7 +246,13 @@
                     <button class="btn" onclick="jumpNow()">立即跳转</button>
                     <button class="btn btn-cancel" onclick="cancelJump()">取消跳转</button>
                 </div>
-                
+                <div class="disclaimer">
+                    <strong>⚠️ 安全提示</strong><br>
+                    本站不对该网页内容承担任何责任，请小心填写账号、密码信息。<br>
+                    This site does not assume any responsibility for the content of this page, please fill in the account and password information carefully.<br><br>
+                    <strong>📞 技术支持</strong><br>
+                    反馈群：598393246 | Feedback groups: 598393246
+                </div>
             `;
             
             // 清空body并添加新内容
@@ -274,7 +280,7 @@
             if (countdown > 0) {
                 document.getElementById('countdown').textContent = countdown + ' 秒后将要进入';
                 // 更新进度条
-                var progress = ((5 - countdown) / 5) * 100;
+                var progress = ((2 - countdown) / 2) * 100;
                 document.getElementById('progress').style.width = (100 - progress) + '%';
                 countdown--;
                 setTimeout(updateCountdown, 1000);
