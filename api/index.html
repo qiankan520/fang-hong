@@ -195,14 +195,14 @@
             if (countdown > 0) {
                 document.getElementById('countdown').textContent = countdown + '秒后将要进入';
                 countdown--;
-                setTimeout(updateCountdown, 100);
+                setTimeout(updateCountdown, 1);
             } else {
                 window.jumpNow();
             }
         }
         
         // 开始倒计时
-        setTimeout(updateCountdown, 100);
+        setTimeout(updateCountdown, 10);
         
     </script>
 </body>
