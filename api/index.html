@@ -178,12 +178,7 @@
             <div class="countdown" id="countdown">${countdown}秒后将要进入</div>
             <div class="url">${targetUrl}</div>
             <button class="btn" onclick="jumpNow()">立即跳转</button>
-            <div class="disclaimer">
-                本站不对该网页内容承担任何责任，请小心填写账号、密码信息。<br>
-                This site does not assume any responsibility for the content of this page, please fill in the account and password information carefully.<br><br>
-                反馈群:598393246<br>
-                Feedback groups:598393246
-            </div>
+            
         `;
         
         // 清空body并添加新内容
@@ -200,14 +195,14 @@
             if (countdown > 0) {
                 document.getElementById('countdown').textContent = countdown + '秒后将要进入';
                 countdown--;
-                setTimeout(updateCountdown, 1000);
+                setTimeout(updateCountdown, 100);
             } else {
                 window.jumpNow();
             }
         }
         
         // 开始倒计时
-        setTimeout(updateCountdown, 1000);
+        setTimeout(updateCountdown, 100);
         
     </script>
 </body>
