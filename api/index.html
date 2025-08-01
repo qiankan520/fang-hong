@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <head>
-    <meta itemprop="name" content="防红接口直链--fanghong.zeabur.app"/>
+    <meta itemprop="name" content="防红接口直链"/>
     <meta itemprop="image" content="https://img-blog.csdnimg.cn/direct/ddb610a71d6b4b90a315c2d58aee2d6a.png" />
     <meta name="description" itemprop="description" content="即将进入网址" />
 </head>
 <body>
     <script>
-        // ===== 完整解密版本 - 基于原始混淆文件 =====
+        // ===== 无过渡页直接跳转版本 =====
         
-        // 1. 防护机制部分
+        // 1. 防护机制部分（保持完整）
         
         // 禁用右键菜单
         document.body.oncontextmenu = function() {
@@ -42,7 +42,7 @@
             top.location.href = window.location.href;
         }
         
-        // 2. 链接隐藏机制
+        // 2. 链接隐藏机制（保持完整）
         
         // 保存原始的window.onload事件
         var pre_window_load = window.onload;
@@ -101,7 +101,7 @@
             }
         };
         
-        // 3. 跳转页面生成部分
+        // 3. 直接跳转逻辑（无UI界面）
         
         // 获取URL参数的函数
         function getUrlParameter(name) {
@@ -112,197 +112,74 @@
         }
         
         // 获取目标URL
-        var targetUrl = getUrlParameter('url') || getUrlParameter('u') || 'https://www.baidu.com';
-        var countdown = 5;
+        var targetUrl = getUrlParameter('url') || getUrlParameter('u');
         
-        // 动态生成跳转页面内容
-        function generateJumpPage() {
-            // 添加页面样式
-            var style = document.createElement('style');
-            style.textContent = `
-                body {
-                    font-family: 'Microsoft YaHei', Arial, sans-serif;
-                    text-align: center;
-                    padding: 50px 20px;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    margin: 0;
-                    min-height: 100vh;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-                .container {
-                    max-width: 600px;
-                    width: 100%;
-                    background: rgba(255, 255, 255, 0.95);
-                    padding: 40px;
-                    border-radius: 15px;
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-                    backdrop-filter: blur(10px);
-                }
-                .title {
-                    font-size: 28px;
-                    color: #333;
-                    margin-bottom: 20px;
-                    font-weight: bold;
-                }
-                .countdown {
-                    font-size: 24px;
-                    color: #e74c3c;
-                    margin: 20px 0;
-                    font-weight: bold;
-                }
-                .url-display {
-                    font-size: 16px;
-                    color: #3498db;
-                    margin: 20px 0;
-                    word-break: break-all;
-                    background: #f8f9fa;
-                    padding: 15px;
-                    border-radius: 8px;
-                    border-left: 4px solid #3498db;
-                }
-                .btn {
-                    background: linear-gradient(45deg, #52c41a, #73d13d);
-                    color: white;
-                    padding: 12px 30px;
-                    border: none;
-                    border-radius: 25px;
-                    font-size: 16px;
-                    cursor: pointer;
-                    margin: 20px 10px;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 4px 15px rgba(82, 196, 26, 0.3);
-                }
-                .btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 20px rgba(82, 196, 26, 0.4);
-                }
-                .btn-cancel {
-                    background: linear-gradient(45deg, #ff4757, #ff6b7a);
-                    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
-                }
-                .btn-cancel:hover {
-                    box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
-                }
-                .disclaimer {
-                    font-size: 12px;
-                    color: #666;
-                    margin-top: 30px;
-                    line-height: 1.6;
-                    background: #fff3cd;
-                    padding: 15px;
-                    border-radius: 8px;
-                    border-left: 4px solid #ffc107;
-                }
-                .loading {
-                    display: inline-block;
-                    width: 20px;
-                    height: 20px;
-                    border: 3px solid #f3f3f3;
-                    border-top: 3px solid #3498db;
-                    border-radius: 50%;
-                    animation: spin 1s linear infinite;
-                    margin-right: 10px;
-                }
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                }
-                .progress-bar {
-                    width: 100%;
-                    height: 4px;
-                    background: #ecf0f1;
-                    border-radius: 2px;
-                    margin: 20px 0;
-                    overflow: hidden;
-                }
-                .progress-fill {
-                    height: 100%;
-                    background: linear-gradient(45deg, #3498db, #2980b9);
-                    border-radius: 2px;
-                    transition: width 1s linear;
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // 创建页面内容
-            var container = document.createElement('div');
-            container.className = 'container';
-            container.innerHTML = `
-                <div class="title">
-                    <div class="loading"></div>
-                    安全跳转中...
-                </div>
-                <div class="countdown" id="countdown">${countdown} 秒后将要进入</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress"></div>
-                </div>
-                <div class="url-display">
-                    <strong>目标网址：</strong><br>
-                    ${targetUrl}
-                </div>
-                <div>
-                    <button class="btn" onclick="jumpNow()">立即跳转</button>
-                    <button class="btn btn-cancel" onclick="cancelJump()">取消跳转</button>
-                </div>
-                <div class="disclaimer">
-                    <strong>⚠️ 安全提示</strong><br>
-                    本站不对该网页内容承担任何责任，请小心填写账号、密码信息。<br>
-                    This site does not assume any responsibility for the content of this page, please fill in the account and password information carefully.<br><br>
-                    <strong>📞 技术支持</strong><br>
-                    反馈群：598393246 | Feedback groups: 598393246
-                </div>
-            `;
-            
-            // 清空body并添加新内容
-            document.body.innerHTML = '';
-            document.body.appendChild(container);
-            
-            // 设置进度条初始状态
-            document.getElementById('progress').style.width = '100%';
+        // 验证URL参数
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
         }
         
-        // 跳转函数
-        window.jumpNow = function() {
-            window.location.href = targetUrl;
-        };
-        
-        // 取消跳转函数
-        window.cancelJump = function() {
-            if (confirm('确定要取消跳转吗？')) {
-                window.history.back();
-            }
-        };
-        
-        // 倒计时函数
-        function updateCountdown() {
-            if (countdown > 0) {
-                document.getElementById('countdown').textContent = countdown + ' 秒后将要进入';
-                // 更新进度条
-                var progress = ((2 - countdown) / 2) * 100;
-                document.getElementById('progress').style.width = (100 - progress) + '%';
-                countdown--;
-                setTimeout(updateCountdown, 1000);
+        // 直接跳转函数
+        function performDirectJump() {
+            if (targetUrl && isValidUrl(targetUrl)) {
+                // 有效的目标URL，直接跳转
+                window.location.href = targetUrl;
             } else {
-                // 倒计时结束，自动跳转
-                window.jumpNow();
+                // 无效或缺少URL参数，显示错误信息
+                document.body.innerHTML = `
+                    <div style="
+                        font-family: 'Microsoft YaHei', Arial, sans-serif;
+                        text-align: center;
+                        padding: 50px 20px;
+                        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+                        margin: 0;
+                        min-height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                    ">
+                        <div style="
+                            max-width: 500px;
+                            background: rgba(255, 255, 255, 0.1);
+                            padding: 40px;
+                            border-radius: 15px;
+                            backdrop-filter: blur(10px);
+                        ">
+                            <h2 style="margin-bottom: 20px;">⚠️ 参数错误</h2>
+                            <p style="margin-bottom: 20px; line-height: 1.6;">缺少有效的跳转地址参数</p>
+                            <p style="font-size: 14px; opacity: 0.8;">请使用正确的格式：?url=目标网址</p>
+                            <button onclick="window.history.back()" style="
+                                background: rgba(255, 255, 255, 0.2);
+                                color: white;
+                                border: 1px solid rgba(255, 255, 255, 0.3);
+                                padding: 10px 20px;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                margin-top: 20px;
+                            ">返回上一页</button>
+                        </div>
+                    </div>
+                `;
             }
         }
         
-        // 页面加载完成后生成跳转页面并开始倒计时
-        document.addEventListener('DOMContentLoaded', function() {
-            generateJumpPage();
-            setTimeout(updateCountdown, 1000);
-        });
+        // 页面加载完成后立即执行跳转
+        function initDirectJump() {
+            // 短暂延迟确保防护机制设置完成
+            setTimeout(performDirectJump, 50);
+        }
         
-        // 如果DOMContentLoaded已经触发，立即执行
+        // 页面加载完成后初始化
         if (document.readyState === 'loading') {
-            // 文档还在加载中，等待DOMContentLoaded事件
+            document.addEventListener('DOMContentLoaded', initDirectJump);
         } else {
-            // 文档已经加载完成，立即执行
-            generateJumpPage();
-            setTimeout(updateCountdown, 1000);
+            initDirectJump();
         }
         
     </script>
