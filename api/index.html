@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <head>
-    <meta itemprop="name" content="防红接口直链--fanghong.zeabur.app"/>
-    <meta itemprop="image" content="https://img-blog.csdnimg.cn/direct/ddb610a71d6b4b90a315c2d58aee2d6a.png" />
-    <meta name="description" itemprop="description" content="即将进入网址" />
+    <meta itemprop="name" content="防红接口直链"/>    
+    <meta name="description" itemprop="description" content="正在跳转" />
 </head>
 <body>
     <script>
-        // 完整解密后的代码 - 包含跳转功能
-        
         // 防止右键菜单
         document.body.oncontextmenu = function() {
             return false;
@@ -35,59 +32,6 @@
             }
         };
         
-        // 保存原始的 window.onload
-        var pre_window_load = window.onload;
-        
-        // 页面加载完成后执行
-        window.onload = function() {
-            // 如果之前有 onload 函数，先执行
-            if (pre_window_load != undefined) {
-                pre_window_load();
-            }
-            
-            // 存储原始链接
-            var originalLinks = [];
-            // 获取所有 a 标签
-            var links = document.getElementsByTagName('a');
-            
-            // 遍历所有链接
-            for (var i = 0; i < links.length; i++) {
-                // 如果链接没有 onclick 事件
-                if (links[i].onclick == undefined) {
-                    // 保存原始链接
-                    originalLinks[i] = links[i].href;
-                    // 将链接替换为时间戳
-                    links[i].href = 'javascript:void(0);' + new Date().getTime().toString();
-                    // 设置索引属性
-                    links[i].setAttribute('data-index', i);
-                    
-                    // 保存原始的 onfocus 事件
-                    var originalOnfocus = links[i].onfocus;
-                    
-                    // 添加 focus 事件监听器
-                    links[i].addEventListener('focus', function() {
-                        // 恢复原始链接
-                        this.href = originalLinks[this.getAttribute('data-index')];
-                        if (originalOnfocus != undefined) {
-                            originalOnfocus();
-                        }
-                    });
-                    
-                    // 保存原始的 onblur 事件
-                    var originalOnblur = links[i].onblur;
-                    
-                    // 添加 blur 事件监听器
-                    links[i].addEventListener('blur', function() {
-                        // 重新隐藏链接
-                        this.href = 'javascript:void(0);' + new Date().getTime().toString();
-                        if (originalOnblur != undefined) {
-                            originalOnblur();
-                        }
-                    });
-                }
-            }
-        };
-        
         // 防止在 iframe 中运行
         if (window.top != window.self) {
             top.location.href = window.location.href;
@@ -101,108 +45,52 @@
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
         
-        // 动态生成跳转页面内容
-        var targetUrl = getUrlParameter('url') || getUrlParameter('u') || 'https://www.baidu.com';
-        var countdown = 5;
+        // 获取目标URL
+        var targetUrl = getUrlParameter('url') || getUrlParameter('u');
         
-        // 添加样式
-        var style = document.createElement('style');
-        style.textContent = `
-            body {
-                font-family: Arial, sans-serif;
-                text-align: center;
-                padding: 50px;
-                background-color: #f0f2f5;
-                margin: 0;
-            }
-            .container {
-                max-width: 600px;
-                margin: 0 auto;
-                background: white;
-                padding: 40px;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-            .countdown {
-                font-size: 24px;
-                color: #333;
-                margin: 20px 0;
-            }
-            .url {
-                font-size: 18px;
-                color: #1890ff;
-                margin: 20px 0;
-                word-break: break-all;
-            }
-            .btn {
-                background-color: #52c41a;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                font-size: 16px;
-                cursor: pointer;
-                margin: 20px 0;
-            }
-            .btn:hover {
-                background-color: #389e0d;
-            }
-            .disclaimer {
-                font-size: 12px;
-                color: #666;
-                margin-top: 30px;
-                line-height: 1.5;
-            }
-            .loading {
-                display: inline-block;
-                width: 20px;
-                height: 20px;
-                border: 3px solid #f3f3f3;
-                border-top: 3px solid #3498db;
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-                margin-right: 10px;
-            }
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // 创建页面内容
-        var container = document.createElement('div');
-        container.className = 'container';
-        container.innerHTML = `
-            <div class="loading"></div>
-            <div class="countdown" id="countdown">${countdown}秒后将要进入</div>
-            <div class="url">${targetUrl}</div>
-            <button class="btn" onclick="jumpNow()">立即跳转</button>
-            
-        `;
-        
-        // 清空body并添加新内容
-        document.body.innerHTML = '';
-        document.body.appendChild(container);
-        
-        // 跳转函数
-        window.jumpNow = function() {
+        // 如果有目标URL，立即跳转
+        if (targetUrl) {
+            // 立即跳转到目标页面
             window.location.href = targetUrl;
-        };
-        
-        // 倒计时函数
-        function updateCountdown() {
-            if (countdown > 0) {
-                document.getElementById('countdown').textContent = countdown + '秒后将要进入';
-                countdown--;
-                setTimeout(updateCountdown, 0);
-            } else {
-                window.jumpNow();
-            }
+        } else {
+            // 如果没有目标URL，显示错误信息
+            document.body.innerHTML = `
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        padding: 50px;
+                        background-color: #f0f2f5;
+                        margin: 0;
+                    }
+                    .error-container {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        background: white;
+                        padding: 40px;
+                        border-radius: 10px;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    }
+                    .error-title {
+                        font-size: 24px;
+                        color: #ff4d4f;
+                        margin: 20px 0;
+                    }
+                    .error-message {
+                        font-size: 16px;
+                        color: #666;
+                        margin: 20px 0;
+                    }
+                </style>
+                <div class="error-container">
+                    <div class="error-title">错误</div>
+                    <div class="error-message">
+                        未找到目标URL参数。<br>
+                        请使用正确的格式：?url=目标网址 或 ?u=目标网址
+                    </div>
+                </div>
+            `;
         }
-        
-        // 开始倒计时
-        setTimeout(updateCountdown, 0);
         
     </script>
 </body>
