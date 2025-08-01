@@ -4,44 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 以下是您原始文件中的 meta 标签，用于搜索引擎优化或社交媒体分享 -->
     <meta itemprop="name" content="防红接口直链--fanghong.zeabur.app"/>
     <meta itemprop="image" content="https://img-blog.csdnimg.cn/direct/ddb610a71d6b4b90a315c2d58aee2d6a.png" />
     <meta name="description" itemprop="description" content="即将进入网址" />
 
-    <!-- 页面标题会由下方的JavaScript动态修改 -->
     <title>载入中...</title>
 
-    <!-- 用于实现加载动画的 CSS 样式 -->
     <style>
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f0f2f5; /* 设置背景色 */
         }
         .container {
             width: 100%;
-            height: 100vh; /* vh 单位使容器占满整个视口高度 */
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
+            background-color: #f0f2f5;
         }
         .loading {
             width: 50px;
             height: 50px;
             border: 5px solid #ccc;
-            border-top-color: #4a90e2; /* 动画颜色 */
+            border-top-color: #4a90e2;
             border-radius: 50%;
-            animation: spin 1s linear infinite; /* 应用旋转动画 */
+            animation: spin 1s linear infinite;
         }
         .text {
             margin-top: 20px;
             font-size: 16px;
             color: #333;
         }
-        /* 定义旋转动画 */
         @keyframes spin {
             to {
                 transform: rotate(360deg);
@@ -51,25 +46,21 @@
 </head>
 <body>
 
-    <!-- 加载动画的HTML元素 -->
     <div class="container">
         <div class="loading"></div>
-        <div class="text">正在安全检测中, 请稍后...</div>
+        <div class="text">正在安全检测中,请稍后...</div>
     </div>
 
-    <!-- 所有的JavaScript逻辑 -->
     <script>
         // --- 核心功能：网址重定向 ---
-        // 使用一个立即执行的匿名函数(IIFE)来避免污染全局作用域
         (function() {
             // 获取当前页面 URL 中 '?' 后面的部分，这部分应为目标网址
-            // e.g., for "index.html?http://example.com", it gets "http://example.com"
             var url = location.search.substring(1);
 
-            // 如果 URL 为空，则不执行任何操作，并更新提示信息
+            // 如果 URL 为空，则不执行任何操作
             if (!url) {
                 document.querySelector('.text').textContent = '未指定目标网址';
-                document.querySelector('.loading').style.display = 'none'; // 隐藏加载动画
+                document.querySelector('.loading').style.display = 'none';
                 return;
             }
 
@@ -78,7 +69,7 @@
                 // 如果不包含 "http"，我们先检查它是否是恶意代码或只是不含协议头的域名
                 var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g"); // 正则表达式，用于匹配中文字符
                 if (reg.test(url)) {
-                    // 如果包含中文字符，判定为无效地址
+                    // 如果包含中文字符，可能不是一个有效的网址，仅修改提示信息
                      document.querySelector('.text').textContent = '目标地址格式无效';
                      document.querySelector('.loading').style.display = 'none';
                 } else {
@@ -91,28 +82,26 @@
                 redirectTo(url);
             }
 
-            // 封装跳转逻辑为一个函数
             function redirectTo(targetUrl) {
                 try {
                     // 创建一个临时的 a 标签，以便轻松地从URL中提取域名(hostname)
                     var tempLink = document.createElement("a");
                     tempLink.href = targetUrl;
-                    var hostname = tempLink.hostname;
 
                     // 更新页面标题和 meta 描述，向用户显示即将跳转到哪里
-                    document.title = "即将打开 - " + hostname;
+                    document.title = "即将打开 - " + tempLink.hostname;
                     var metaDescription = document.querySelector('meta[name="description"]');
                     if(metaDescription) {
-                        metaDescription.setAttribute("content", "即将进入网址: " + hostname);
+                        metaDescription.setAttribute("content", "即将进入网址: " + tempLink.hostname);
                     }
                     
-                    // 设置一个1秒的延迟，然后执行跳转，给用户反应时间
+                    // 设置一个1秒的延迟，然后执行跳转
                     setTimeout(function() {
                         location.href = targetUrl;
                     }, 1000);
 
                 } catch (e) {
-                    // 如果发生错误 (例如，URL格式极度不规范)，显示错误信息
+                    // 如果发生错误，显示错误信息
                     document.querySelector('.text').textContent = '目标地址解析失败';
                     document.querySelector('.loading').style.display = 'none';
                     console.error("Redirect error:", e);
@@ -128,7 +117,7 @@
             return false;
         };
 
-        // 2. 禁止文本选择功能 (防止轻易复制内容)
+        // 2. 禁止文本选择功能
         document.body.onselectstart = function() {
             return false;
         };
@@ -138,18 +127,41 @@
             var e = event || window.event;
             // 屏蔽 F12 (开发者工具), Ctrl+S (保存页面), Ctrl+C (复制)
             if (e.keyCode === 123 || (e.ctrlKey && e.keyCode === 83) || (e.ctrlKey && e.keyCode === 67)) {
-                e.preventDefault(); // 阻止默认事件
+                e.preventDefault();
                 return false;
             }
         };
 
-        // 4. [已移除] 防止页面被嵌入到`iframe`中的代码块已被移除，因为它与当前预览环境冲突。
-        /*
+        // 4. 防止页面被嵌入到`iframe`中（一种常见的钓鱼网站手段）
         if (window.top !== window.self) {
+            // 如果当前窗口不是顶级窗口，则让顶级窗口跳转到当前页面的URL
             top.location.href = window.location.href;
         }
-        */
 
+        // 5. 反爬虫的链接处理（只在页面上有a标签时才有用）
+        // 这个脚本在您的重定向页上作用不大，但如果您的其他页面也用了此加密，它会起作用
+        window.addEventListener('load', function() {
+            var allLinks = document.getElementsByTagName("a");
+            if (allLinks.length === 0) return;
+
+            var originalHrefs = [];
+            for (var i = 0; i < allLinks.length; i++) {
+                if (!allLinks[i].onclick) {
+                    originalHrefs[i] = allLinks[i].href;
+                    allLinks[i].href = 'javascript:void(0);';
+                    allLinks[i].setAttribute('data-idx', i);
+
+                    allLinks[i].addEventListener('focus', function() {
+                        var idx = this.getAttribute('data-idx');
+                        this.href = originalHrefs[idx];
+                    });
+
+                    allLinks[i].addEventListener('blur', function() {
+                        this.href = 'javascript:void(0);';
+                    });
+                }
+            }
+        });
     </script>
 
 </body>
