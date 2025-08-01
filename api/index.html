@@ -1,1 +1,148 @@
-<!DOCTYPE html><head><meta itemprop="name" content="防红接口直链--fanghong.zeabur.app"/><meta itemprop="image" content="https://img-blog.csdnimg.cn/direct/ddb610a71d6b4b90a315c2d58aee2d6a.png" /><meta name="description" itemprop="description" content="即将进入网址" /></head><body><script>function getUrlParameter(name){name=name.replace(/[\[]/,'\\[').replace(/[\]]/,'\\]');var regex=new RegExp('[\\?&]'+name+'=([^&#]*)');var results=regex.exec(location.search);return results===null?'':decodeURIComponent(results[1].replace(/\+/g,' '));}var targetUrl=getUrlParameter('url')||getUrlParameter('u');if(targetUrl){document.write('<a href="'+targetUrl+'" id="autoLink">正在跳转...</a>');}document.body.oncontextmenu=function(){return false;};document.body.onselectstart=function(){return false;};document.onkeydown=function(event){var event=event||window.event;if(event.ctrlKey==1&&event.keyCode==67){return false;}if(event.ctrlKey==1&&event.keyCode==83){return false;}if(event.keyCode==123){return false;}};if(window.top!=window.self){top.location.href=window.location.href;}var pre_window_load=window.onload;window.onload=function(){if(pre_window_load!=undefined){pre_window_load();}var originalLinks=[];var links=document.getElementsByTagName('a');for(var i=0;i<links.length;i++){if(links[i].onclick==undefined){originalLinks[i]=links[i].href;links[i].href='javascript:void(0);'+new Date().getTime().toString();links[i].setAttribute('data-index',i);var originalOnfocus=links[i].onfocus;links[i].addEventListener('focus',function(){this.href=originalLinks[this.getAttribute('data-index')];if(originalOnfocus!=undefined){originalOnfocus();}});var originalOnblur=links[i].onblur;links[i].addEventListener('blur',function(){this.href='javascript:void(0);'+new Date().getTime().toString();if(originalOnblur!=undefined){originalOnblur();}});}}if(targetUrl){var autoLink=document.getElementById('autoLink');if(autoLink){autoLink.focus();setTimeout(function(){autoLink.click();},50);}}};if(!targetUrl){document.write('<div style="text-align:center;padding:50px;color:#666;">参数错误：缺少url参数</div>');}</script></body></html>
+<!DOCTYPE html>
+<head>
+    <meta itemprop="name" content="防红接口直链--fanghong.zeabur.app"/>
+    <meta itemprop="image" content="https://img-blog.csdnimg.cn/direct/ddb610a71d6b4b90a315c2d58aee2d6a.png" />
+    <meta name="description" itemprop="description" content="即将进入网址" />
+</head>
+<body>
+<script>
+/**
+ * 防红跳转页面 - 完全解密后的精确版本
+ * 
+ * 主要功能：
+ * 1. 隐藏真实链接地址，防止被检测
+ * 2. 只有在链接获得焦点时才显示真实链接
+ * 3. 禁用右键、复制、保存等操作
+ * 4. 防止在iframe中嵌入
+ */
+
+// 保存原始的window.onload事件
+var pre_window_load = window.onload;
+
+// 页面加载完成后执行
+window.onload = function() {
+    // 如果存在原始的onload函数，先执行它
+    if (pre_window_load != undefined) {
+        pre_window_load();
+    }
+    
+    // 存储所有链接的真实地址
+    var originalHrefs = [];
+    
+    // 获取页面中的所有链接
+    var allLinks = document.getElementsByTagName("a");
+    
+    // 处理每个链接
+    for (var i = 0; i < allLinks.length; i++) {
+        var currentLink = allLinks[i];
+        
+        // 只处理没有onclick事件的链接
+        if (currentLink.onclick == undefined) {
+            // 保存真实的链接地址
+            originalHrefs[i] = currentLink.href;
+            
+            // 用随机时间戳替换链接，隐藏真实地址
+            currentLink.href = "#" + new Date().getTime().toString();
+            
+            // 给链接添加索引标识
+            currentLink.setAttribute("data-index", i);
+            
+            // 保存原始的focus事件处理器
+            var originalFocusHandler = currentLink.onfocus;
+            
+            // 链接获得焦点时恢复真实链接
+            currentLink.addEventListener("focus", function() {
+                var linkIndex = this.getAttribute("data-index");
+                this.href = originalHrefs[linkIndex];
+                
+                // 执行原始的focus处理器
+                if (originalFocusHandler != undefined) {
+                    originalFocusHandler();
+                }
+            });
+            
+            // 保存原始的blur事件处理器
+            var originalBlurHandler = currentLink.onblur;
+            
+            // 链接失去焦点时重新隐藏链接
+            currentLink.addEventListener("blur", function() {
+                this.href = "#" + new Date().getTime().toString();
+                
+                // 执行原始的blur处理器
+                if (originalBlurHandler != undefined) {
+                    originalBlurHandler();
+                }
+            });
+        }
+    }
+};
+
+// 安全防护措施
+
+// 1. 禁用右键菜单
+document.body.oncontextmenu = function() {
+    return false;
+};
+
+// 2. 禁用文本选择
+document.body.onselectstart = function() {
+    return false;
+};
+
+// 3. 禁用特定键盘快捷键
+document.onkeydown = function(event) {
+    var keyEvent = event || window.event;
+    
+    // 禁用Ctrl+C (复制)
+    if (keyEvent.ctrlKey == 1 && keyEvent.keyCode == 67) {
+        return false;
+    }
+    
+    // 禁用Ctrl+S (保存页面)
+    if (keyEvent.ctrlKey == 1 && keyEvent.keyCode == 83) {
+        return false;
+    }
+    
+    // 禁用F12 (开发者工具)
+    if (keyEvent.keyCode == 123) {
+        return false;
+    }
+};
+
+// 4. 防止页面被嵌入到iframe中
+if (window.top != window.self) {
+    // 如果检测到页面在iframe中，跳转到顶层窗口
+    top.location.href = window.location.href;
+}
+
+/**
+ * 工作原理说明：
+ * 
+ * 1. 链接隐藏机制：
+ *    - 页面加载时，所有链接的href都被替换为"#时间戳"
+ *    - 真实链接地址存储在JavaScript变量中
+ *    - 只有当链接获得焦点(focus)时，才临时恢复真实地址
+ *    - 链接失去焦点(blur)后，立即重新隐藏
+ * 
+ * 2. 焦点触发方式：
+ *    - 用户点击链接时会触发focus事件
+ *    - 用户使用Tab键导航到链接时会触发focus事件
+ *    - 用户点击其他地方或Tab离开时会触发blur事件
+ * 
+ * 3. 防护机制：
+ *    - 禁用右键菜单，防止查看源代码
+ *    - 禁用文本选择，防止复制内容
+ *    - 禁用Ctrl+C、Ctrl+S、F12等快捷键
+ *    - 防止页面被嵌入iframe
+ * 
+ * 4. 应用场景：
+ *    - 防止链接被微信等平台检测和拦截
+ *    - 保护真实跳转地址不被轻易发现
+ *    - 增加页面的安全性和隐私性
+ * 
+ * 注意：这个版本使用focus/blur事件，而不是mouseover/mouseout事件
+ * 这意味着只有在用户实际与链接交互时才会显示真实地址
+ */
+</script>
+</body>
+</html>
