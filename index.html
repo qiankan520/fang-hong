@@ -1,59 +1,66 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-  <title>QQ、微信防红</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <link rel="stylesheet" href="assets/css/main.css" />
-  <style>
-    /* 新增样式实现垂直和水平居中 */
-    .center-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 60vh;
-      text-align: center;
-    }
+	<head>
+		<title>QQ、微信防红</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<style>
+			body {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				margin: 0;
+				padding: 20px;
+				box-sizing: border-box;
+				text-align: center;
+			}
+			#header, #signup-form, #footer {
+				width: 100%;
+				max-width: 600px;
+			}
+			#signup-form {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 10px;
+			}
+			input[type="url"], input[type="button"] {
+				width: 100%;
+				max-width: 400px;
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+	<body class="is-preload">
 
-    #signup-form input {
-      margin: 10px;
-      padding: 10px;
-      font-size: 16px;
-    }
+		<!-- Header -->
+			<header id="header">
+				<h1>QQ、微信防红</h1>
+				<p>在下方输入需要跳转的链接，即可生成防红接口。<br>
+					复制下方生成的链接，粘贴到微信或者QQ即可。</p>
+			</header>
 
-    #b_url {
-      margin-top: 20px;
-      font-weight: bold;
-      word-break: break-all;
-    }
-  </style>
-</head>
-<body class="is-preload">
+		<!-- Signup Form -->
+			<form id="signup-form" method="post">
+				<input type="url" name="url" id="url" placeholder="需要跳转的网址" />
+				<input type="button" value="生成" onclick="build_url()"/>
+			</form>
+			<p id="b_url"></p>
 
-  <!-- Header -->
-  <header id="header">
-    <h1>QQ、微信防红</h1>
-    <p>在下方输入需要跳转的链接，即可生成防红接口。<br>
-      复制下方生成的链接，粘贴到微信或者QQ即可。</p>
-  </header>
+			<script src="./assets/js/build_url.js"></script>
 
-  <!-- Centered Form & Result -->
-  <div class="center-container">
-    <form id="signup-form" method="post">
-      <input type="url" name="url" id="url" placeholder="需要跳转的网址" />
-      <input type="button" value="生成" onclick="build_url()" />
-    </form>
-    <p id="b_url"></p>
-  </div>
+		<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<!-- 图标内容 -->
+				</ul>
+				<ul class="copyright">
+					<!-- 版权内容 -->
+				</ul>
+			</footer>
 
-  <script src="./assets/js/build_url.js"></script>
-
-  <!-- Footer -->
-  <footer id="footer">
-    <ul class="icons"></ul>
-    <ul class="copyright"></ul>
-  </footer>
-
-</body>
+	</body>
 </html>
