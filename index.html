@@ -248,14 +248,21 @@
             border-radius: 10px;
             font-size: 0.95rem;
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 10px;
         }
         
         .domain-info span {
             background: rgba(0, 114, 255, 0.2);
-            padding: 4px 10px;
-            border-radius: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .domain-info i {
+            color: #00c6ff;
         }
         
         .features {
@@ -339,10 +346,17 @@
             transform: translateX(150%);
             transition: transform 0.4s ease;
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .notification.show {
             transform: translateX(0);
+        }
+        
+        .notification.error {
+            background: rgba(255, 87, 87, 0.9);
         }
         
         @media (max-width: 768px) {
@@ -380,6 +394,17 @@
             .result-container {
                 padding: 20px 15px;
             }
+            
+            .result-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .copy-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -414,8 +439,8 @@
             </div>
             <p id="b_url"></p>
             <div class="domain-info">
-                <span>当前域名: <span id="currentDomain">example.com</span></span>
-                <span>生成格式: <span id="urlFormat">https://example.com/?url=</span></span>
+                <span><i class="fas fa-info-circle"></i> 当前生成格式：<span id="currentFormat"></span></span>
+                <span><i class="fas fa-code"></i> API路径：/fang-hong/api/?url=</span>
             </div>
         </div>
         
@@ -447,14 +472,17 @@
         </div>
     </footer>
     
-    <div class="notification" id="notification">链接已复制到剪贴板！</div>
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span>链接已复制到剪贴板！</span>
+    </div>
     
     <script>
         // 显示当前域名信息
         document.addEventListener('DOMContentLoaded', function() {
-            const currentDomain = window.location.hostname;
-            document.getElementById('currentDomain').textContent = currentDomain;
-            document.getElementById('urlFormat').textContent = `https://${currentDomain}/?url=`;
+            const currentUrl = window.location.href;
+            const baseUrl = currentUrl.split('/').slice(0, 3).join('/');
+            document.getElementById('currentFormat').textContent = `${baseUrl}/fang-hong/api/?url=`;
         });
         
         // 生成防红链接
@@ -477,14 +505,15 @@
                 return;
             }
             
-            // 获取当前域名
-            const currentDomain = window.location.hostname;
+            // 获取当前URL并提取基础部分
+            const currentUrl = window.location.href;
+            const baseUrl = currentUrl.split('/').slice(0, 3).join('/');
             
             // 编码URL
             const encodedUrl = encodeURIComponent(urlInput.value);
             
-            // 生成防红链接
-            const safeUrl = `https://${currentDomain}/?url=${encodedUrl}`;
+            // 生成防红链接（使用正确格式）
+            const safeUrl = `${baseUrl}/fang-hong/api/?url=${encodedUrl}`;
             
             // 显示结果
             resultElement.textContent = safeUrl;
@@ -513,13 +542,18 @@
         // 显示通知
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
-            notification.textContent = message;
+            const icon = notification.querySelector('i');
+            const textSpan = notification.querySelector('span');
+            
+            textSpan.textContent = message;
             
             // 设置通知样式
             if (type === 'error') {
-                notification.style.background = 'rgba(255, 87, 87, 0.9)';
+                notification.className = 'notification error';
+                icon.className = 'fas fa-exclamation-circle';
             } else {
-                notification.style.background = 'rgba(0, 200, 83, 0.9)';
+                notification.className = 'notification';
+                icon.className = 'fas fa-check-circle';
             }
             
             notification.classList.add('show');
