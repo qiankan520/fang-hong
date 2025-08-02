@@ -1,20 +1,19 @@
 /**
  * =================================================================================
- * ## 综合防红跳转页面逻辑 (最终修复版) ##
+ * ## 综合防红跳转页面逻辑 (背景美化版) ##
  *
  * 该脚本核心功能是一个“防红”（Anti-blocking）跳转页。它接收一个URL参数，
  * 然后根据用户所在的环境（微信、QQ、支付宝、普通浏览器），采用不同的策略
  * 引导用户访问目标URL，从而绕过腾讯或阿里等平台的域名封锁检测。
  *
- * @version 1.2.0 (已修复变量作用域BUG，禁用域名检查)
+ * @version 1.3.0 (使用纯CSS动态渐变背景，性能更优)
  * @author Deobfuscated by AI
  * =================================================================================
  */
 
 // --- 全局变量和初始化 ---
 
-// --- 修复点 1: 将 container 变量声明提升到全局作用域 ---
-let container; 
+let container;
 
 // 从URL查询参数中获取名为 'url' 的值
 let urlParameterValue = getUrlParameter('url');
@@ -179,8 +178,6 @@ function handleButtonClick() {
  * @param {string} url - 脚本URL
  */
 function addScripts(url) {
-    // 此函数在原始代码中似乎没有被完全启用，但其意图是构建一个包含复制、打开等功能的页面
-    // 这里我们根据其逻辑还原一个类似的页面
     location.hash = `#${url}`;
 
     // 设置页面样式
@@ -360,7 +357,56 @@ if (!urlParameterValue || !/[\d\w\u4e00-\u9fa5][\d\w\u4e00-\u9fa5]*\.[\d\w\u4e00
             document.head.appendChild(meta);
 
             const styleElement = document.createElement('style');
-            styleElement.innerHTML = `html,body{height:100%;-webkit-tap-highlight-color:transparent}body{margin:0;padding:0;background:url(https://www.bing.com/th?id=OHR.Borovets_ZH-CN2182604886_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp) no-repeat;background-size:cover;display:flex;align-items:center;justify-content:center}.container{text-align:center}.button{display:inline-block;padding:12px 24px;background-color:#4CAF50;color:#fff;text-decoration:none;border-radius:5px;font-size:16px}`;
+            
+            // --- 美化点: 将原来的 background:url(...) 替换为下面的纯CSS动态渐变背景 ---
+            styleElement.innerHTML = `
+                html, body {
+                    height: 100%;
+                    -webkit-tap-highlight-color: transparent;
+                }
+                body {
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    /* 核心：定义一个巨大的渐变背景，并设置动画 */
+                    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+                    background-size: 400% 400%;
+                    animation: gradient 15s ease infinite;
+                }
+                /* 核心：定义动画关键帧，让背景位置移动 */
+                @keyframes gradient {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+                .container {
+                    text-align: center;
+                }
+                .button {
+                    display: inline-block;
+                    padding: 12px 28px;
+                    color: #fff;
+                    background-color: rgba(255, 255, 255, 0.2); /* 半透明按钮 */
+                    border: 1px solid #fff;
+                    text-decoration: none;
+                    border-radius: 50px; /* 圆角按钮 */
+                    font-size: 16px;
+                    font-weight: bold;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px); /* 毛玻璃效果 */
+                }
+                .button:hover {
+                    background-color: rgba(255, 255, 255, 0.4);
+                }
+                .url-text {
+                    color: #fff;
+                    margin-top: 15px;
+                    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* 文字阴影，增强可读性 */
+                }
+            `;
             document.head.appendChild(styleElement);
 
             // 检查URL参数open=1，如果存在则直接用iframe加载
@@ -370,10 +416,9 @@ if (!urlParameterValue || !/[\d\w\u4e00-\u9fa5][\d\w\u4e00-\u9fa5]*\.[\d\w\u4e00
             } else {
                 // 否则，显示引导页面
                 document.title = decodeURIComponent('请点击跳转');
-                // --- 修复点 2: 赋值给全局的 container 变量，而不是重新声明 ---
                 container = document.createElement('div'); 
                 container.className = 'container';
-                const htmlString = `<a href="javascript:void(0);" class="button" onclick="handleButtonClick()">点我跳转</a><p style="color: #fff">正在为您跳转到：${urlParameterValue}</p>`;
+                const htmlString = `<a href="javascript:void(0);" class="button" onclick="handleButtonClick()">点我跳转</a><p class="url-text">正在为您跳转到：${urlParameterValue}</p>`;
                 container.innerHTML = htmlString;
                 document.body.appendChild(container);
 
