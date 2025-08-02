@@ -1,171 +1,120 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>QQ、微信防红链接生成</title>
+    <title>QQ、微信防红</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --accent-color: #4895ef;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4cc9f0;
-            --border-radius: 12px;
-            --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
 
-        * {
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            color: var(--dark-color);
-            line-height: 1.6;
         }
 
-        .container {
-            width: 100%;
-            max-width: 600px;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            overflow: hidden;
-            transition: var(--transition);
-            margin-bottom: 30px;
-        }
-
-        .container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        header {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 30px 20px;
+        #header {
             text-align: center;
+            margin-bottom: 30px;
+            max-width: 600px;
         }
 
-        header h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
+        #header h1 {
+            color: var(--primary-dark);
+            font-size: 2.2rem;
+            margin-bottom: 15px;
             font-weight: 700;
         }
 
-        header p {
-            opacity: 0.9;
-            font-size: 1rem;
+        #header p {
+            color: var(--gray);
+            font-size: 1.1rem;
         }
 
-        .form-container {
+        #signup-form {
+            background: white;
             padding: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        input[type="url"] {
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
             width: 100%;
-            padding: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        #url {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
             border: 2px solid #e9ecef;
             border-radius: var(--border-radius);
-            font-size: 1rem;
-            transition: var(--transition);
             margin-bottom: 15px;
+            transition: var(--transition);
         }
 
-        input[type="url"]:focus {
+        #url:focus {
             outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
         }
 
-        .btn {
-            background: var(--primary-color);
+        #signup-form input[type="button"] {
+            background-color: var(--primary);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: var(--border-radius);
+            padding: 12px 20px;
             font-size: 1rem;
             font-weight: 600;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            transition: var(--transition);
             width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            transition: var(--transition);
         }
 
-        .btn:hover {
-            background: var(--secondary-color);
+        #signup-form input[type="button"]:hover {
+            background-color: var(--primary-dark);
             transform: translateY(-2px);
         }
 
-        .btn:active {
+        #signup-form input[type="button"]:active {
             transform: translateY(0);
         }
 
-        .btn i {
-            font-size: 1.2rem;
-        }
-
         #b_url {
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 15px;
-            background-color: #e9ecef;
+            background-color: #e8f4fd;
             border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
             word-break: break-all;
             display: none;
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.3s ease-out;
+            max-width: 500px;
+            width: 100%;
         }
 
-        footer {
+        #footer {
+            margin-top: 40px;
             text-align: center;
-            margin-top: 20px;
-            color: #6c757d;
+            color: var(--gray);
             font-size: 0.9rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            color: var(--dark-color);
-            background: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .social-links a:hover {
-            transform: translateY(-3px);
-            color: var(--primary-color);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
         }
 
         @keyframes fadeIn {
@@ -173,78 +122,42 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .container {
-                max-width: 95%;
+        @media (max-width: 600px) {
+            #header h1 {
+                font-size: 1.8rem;
             }
             
-            header h1 {
-                font-size: 1.5rem;
+            #header p {
+                font-size: 1rem;
             }
             
-            header p {
-                font-size: 0.9rem;
+            #signup-form {
+                padding: 20px;
             }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header id="header">
-            <h1>QQ、微信防红链接生成</h1>
-            <p>在下方输入需要跳转的链接，即可生成防红接口</p>                
-        </header>
+<body class="is-preload">
+    <!-- Header -->
+    <header id="header">
+        <h1>QQ、微信防红</h1>
+        <p>在下方输入需要跳转的链接，即可生成防红接口。</p>
+    </header>
 
-        <div class="form-container">
-            <form id="signup-form" method="post">
-                <div class="form-group">
-                    <input type="url" name="url" id="url" placeholder="请输入需要跳转的网址 (例如: https://example.com)" required />
-                </div>
-                <button type="button" class="btn" onclick="build_url()">
-                    <i class="fas fa-link"></i> 生成防红链接
-                </button>
-            </form>
-            <p id="b_url"></p>
-        </div>
-    </div>
+    <!-- Signup Form -->
+    <form id="signup-form" method="post">
+        <input type="url" name="url" id="url" placeholder="需要跳转的网址" />
+        <input type="button" value="生成" onclick="build_url()"/>
+    </form>
+    <p id="b_url"></p>
 
+    <script src="./assets/js/build_url.js"></script>
+
+    <!-- Footer -->
     <footer id="footer">
-        <div class="social-links">
-            <a href="#"><i class="fab fa-weixin"></i></a>
-            <a href="#"><i class="fab fa-qq"></i></a>
-            <a href="#"><i class="fab fa-weibo"></i></a>
-        </div>
-        <p>© 2025 防红链接生成工具 | 安全可靠的链接转换服务</p>
+        <ul class="copyright">
+            <li>&copy; 防红链接生成工具</li>
+        </ul>
     </footer>
-
-    <script>
-        function build_url() {
-            const inputUrl = document.getElementById('url').value;
-            const outputElement = document.getElementById('b_url');
-            
-            if (!inputUrl) {
-                alert('请输入有效的网址');
-                return;
-            }
-            
-            // 这里应该是您的防红链接生成逻辑
-            // 示例中只是简单显示输入的内容
-            const generatedUrl = `https://your-domain.com/redirect?url=${encodeURIComponent(inputUrl)}`;
-            
-            outputElement.textContent = generatedUrl;
-            outputElement.style.display = 'block';
-            outputElement.style.backgroundColor = '#d4edda';
-            outputElement.style.color = '#155724';
-            outputElement.style.border = '1px solid #c3e6cb';
-            
-            // 复制到剪贴板的功能
-            navigator.clipboard.writeText(generatedUrl).then(() => {
-                outputElement.textContent += ' (已自动复制到剪贴板)';
-            }).catch(err => {
-                console.error('无法复制到剪贴板: ', err);
-            });
-        }
-    </script>
 </body>
 </html>
