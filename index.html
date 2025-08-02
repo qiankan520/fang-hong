@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>QQ、微信防红</title>
+    <title>QQ、微信防红链接生成</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <style>
@@ -11,8 +11,9 @@
             --light: #f8f9fa;
             --dark: #212529;
             --gray: #6c757d;
+            --success: #4bb543;
             --border-radius: 8px;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
 
@@ -22,13 +23,12 @@
             color: var(--dark);
             line-height: 1.6;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
         }
 
         #header {
@@ -56,7 +56,7 @@
             box-shadow: var(--shadow);
             width: 100%;
             max-width: 500px;
-            margin: 0 auto;
+            margin: 0 auto 20px;
         }
 
         #url {
@@ -98,7 +98,7 @@
         }
 
         #b_url {
-            margin-top: 25px;
+            margin: 20px auto 0;
             padding: 15px;
             background-color: #e8f4fd;
             border-radius: var(--border-radius);
@@ -108,6 +108,17 @@
             animation: fadeIn 0.3s ease-out;
             max-width: 500px;
             width: 100%;
+            position: relative;
+        }
+
+        #b_url.copied::after {
+            content: "✓ 已复制";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--success);
+            font-size: 0.9rem;
         }
 
         #footer {
@@ -115,6 +126,22 @@
             text-align: center;
             color: var(--gray);
             font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         @keyframes fadeIn {
@@ -140,54 +167,69 @@
 <body class="is-preload">
     <!-- Header -->
     <header id="header">
-        <h1>QQ、微信防红</h1>
-        <p>在下方输入需要跳转的链接，即可生成防红接口。<br>
-            复制下方生成的链接，粘贴到微信或者QQ即可。</p>
+        <h1>QQ、微信防红链接生成</h1>
+        <p>在下方输入需要跳转的链接，即可生成防红接口</p>
     </header>
 
     <!-- Signup Form -->
     <form id="signup-form" method="post">
-        <input type="url" name="url" id="url" placeholder="需要跳转的网址" />
-        <input type="button" value="生成" onclick="build_url()"/>
+        <input type="url" name="url" id="url" placeholder="请输入需要跳转的完整网址 (例如: https://example.com)" required />
+        <input type="button" value="生成" onclick="build_url()" id="generate-btn"/>
     </form>
     <p id="b_url"></p>
 
-    <!-- 临时测试用的build_url函数，实际使用时请用您的build_url.js -->
+    <!-- Footer -->
+    <footer id="footer">
+        <ul class="copyright">
+            <li>&copy; <span id="current-year"></span> 防红链接生成工具</li>
+        </ul>
+    </footer>
+
+    <!-- 兼容性脚本，确保与build_url.js配合工作 -->
     <script>
-        function build_url() {
-            const inputUrl = document.getElementById('url').value;
+        // 设置当前年份
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // 为build_url.js准备的辅助函数
+        function showGeneratedUrl(url) {
             const outputElement = document.getElementById('b_url');
-            
-            if (!inputUrl) {
-                alert('请输入有效的网址');
-                return;
-            }
-            
-            // 这里是临时测试逻辑，实际请使用您的build_url.js
-            const generatedUrl = `https://your-redirect-service.com/?url=${encodeURIComponent(inputUrl)}`;
-            
-            outputElement.textContent = generatedUrl;
+            outputElement.textContent = url;
             outputElement.style.display = 'block';
             
             // 尝试复制到剪贴板
             try {
-                navigator.clipboard.writeText(generatedUrl).then(() => {
-                    outputElement.textContent += ' (已复制到剪贴板)';
+                navigator.clipboard.writeText(url).then(() => {
+                    outputElement.classList.add('copied');
                 });
             } catch (err) {
                 console.log('复制失败:', err);
             }
         }
+        
+        function showError(message) {
+            const outputElement = document.getElementById('b_url');
+            outputElement.textContent = message;
+            outputElement.style.display = 'block';
+            outputElement.style.backgroundColor = '#f8d7da';
+            outputElement.style.borderLeftColor = '#dc3545';
+        }
+        
+        function setLoading(state) {
+            const btn = document.getElementById('generate-btn');
+            if (state) {
+                btn.value = '生成中...';
+                btn.disabled = true;
+                btn.insertAdjacentHTML('afterBegin', '<span class="loading"></span>');
+            } else {
+                btn.value = '生成';
+                btn.disabled = false;
+                const loading = btn.querySelector('.loading');
+                if (loading) loading.remove();
+            }
+        }
     </script>
     
-    <!-- 实际使用时请取消下面这行注释，并删除上面的临时script -->
-    <!-- <script src="./assets/js/build_url.js"></script> -->
-
-    <!-- Footer -->
-    <footer id="footer">
-        <ul class="copyright">
-            <li>&copy; 防红链接生成工具</li>
-        </ul>
-    </footer>
+    <!-- 实际业务逻辑脚本 -->
+    <script src="./assets/js/build_url.js"></script>
 </body>
 </html>
