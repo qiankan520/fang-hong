@@ -1,52 +1,59 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>QQ、微信防红</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="is-preload">
+<head>
+  <title>QQ、微信防红</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* 新增样式实现垂直和水平居中 */
+    .center-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+      text-align: center;
+    }
 
-		<!-- Header -->
-			<header id="header">
-				<h1>QQ、微信防红</h1>
-				<p>在下方输入需要跳转的链接，即可生成防红接口。<br>
-					复制下方生成的链接，粘贴到微信或者QQ即可。</p>
-			</header>
+    #signup-form input {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
 
-		<!-- Signup Form -->
-			<style>
-  #signup-form {
-    text-align: center;
-    margin-top: 50px;
-  }
-  #signup-form input {
-    margin: 10px;
-  }
-</style>
+    #b_url {
+      margin-top: 20px;
+      font-weight: bold;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body class="is-preload">
 
-<form id="signup-form" method="post">
-  <input type="url" name="url" id="url" placeholder="需要跳转的网址" />
-  <input type="button" value="生成" onclick="build_url()" />
-</form>
+  <!-- Header -->
+  <header id="header">
+    <h1>QQ、微信防红</h1>
+    <p>在下方输入需要跳转的链接，即可生成防红接口。<br>
+      复制下方生成的链接，粘贴到微信或者QQ即可。</p>
+  </header>
 
-			<p id="b_url"></p>
+  <!-- Centered Form & Result -->
+  <div class="center-container">
+    <form id="signup-form" method="post">
+      <input type="url" name="url" id="url" placeholder="需要跳转的网址" />
+      <input type="button" value="生成" onclick="build_url()" />
+    </form>
+    <p id="b_url"></p>
+  </div>
 
-			<script src="./assets/js/build_url.js"></script>
+  <script src="./assets/js/build_url.js"></script>
 
-		<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
+  <!-- Footer -->
+  <footer id="footer">
+    <ul class="icons"></ul>
+    <ul class="copyright"></ul>
+  </footer>
 
-					
-
-				</ul>
-				<ul class="copyright">
-					
-				</ul>
-			</footer>
-
-		
-	</body>
+</body>
 </html>
