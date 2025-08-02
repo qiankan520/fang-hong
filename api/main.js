@@ -1,12 +1,12 @@
 /**
  * =================================================================================
- * ## 综合防红跳转页面逻辑 ##
+ * ## 综合防红跳转页面逻辑 (已禁用域名检查) ##
  *
  * 该脚本核心功能是一个“防红”（Anti-blocking）跳转页。它接收一个URL参数，
  * 然后根据用户所在的环境（微信、QQ、支付宝、普通浏览器），采用不同的策略
  * 引导用户访问目标URL，从而绕过腾讯或阿里等平台的域名封锁检测。
  *
- * @version 1.0.0
+ * @version 1.1.0 (域名检查已禁用)
  * @author Deobfuscated by AI
  * =================================================================================
  */
@@ -231,12 +231,15 @@ function addScripts(url) {
 
 // --- 程序主入口和执行逻辑 ---
 
+/*
+// --- 以下是已被注释掉的域名有效性检查逻辑 ---
 // 1. 域名有效性检查（异步执行）
 (async () => {
     // 尝试从多个源获取一个“失效域名”列表
     const blocklistUrls = [
-        'https://qiankan520.github.io/fang-hong/api/blocklist.txt'
-        
+        'https://jsjiami.com.v7.zfe.space/release/v7/dist/blocklist.txt',
+        'https://jsjiami.com.v7.zfe.fun/release/v7/dist/blocklist.txt',
+        'https://jsjiami.com.v7.zfe.fit/release/v7/dist/blocklist.txt'
     ];
 
     async function fetchBlocklist(url) {
@@ -273,6 +276,7 @@ function addScripts(url) {
         return;
     }
 })();
+*/
 
 // 2. 主逻辑判断
 // 检查 'url' 参数是否存在且格式是否为域名
