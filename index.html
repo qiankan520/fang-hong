@@ -141,7 +141,8 @@
     <!-- Header -->
     <header id="header">
         <h1>QQ、微信防红</h1>
-        <p>在下方输入需要跳转的链接，即可生成防红接口。</p>
+        <p>在下方输入需要跳转的链接，即可生成防红接口。<br>
+            复制下方生成的链接，粘贴到微信或者QQ即可。</p>
     </header>
 
     <!-- Signup Form -->
@@ -151,7 +152,36 @@
     </form>
     <p id="b_url"></p>
 
-    <script src="./assets/js/build_url.js"></script>
+    <!-- 临时测试用的build_url函数，实际使用时请用您的build_url.js -->
+    <script>
+        function build_url() {
+            const inputUrl = document.getElementById('url').value;
+            const outputElement = document.getElementById('b_url');
+            
+            if (!inputUrl) {
+                alert('请输入有效的网址');
+                return;
+            }
+            
+            // 这里是临时测试逻辑，实际请使用您的build_url.js
+            const generatedUrl = `https://your-redirect-service.com/?url=${encodeURIComponent(inputUrl)}`;
+            
+            outputElement.textContent = generatedUrl;
+            outputElement.style.display = 'block';
+            
+            // 尝试复制到剪贴板
+            try {
+                navigator.clipboard.writeText(generatedUrl).then(() => {
+                    outputElement.textContent += ' (已复制到剪贴板)';
+                });
+            } catch (err) {
+                console.log('复制失败:', err);
+            }
+        }
+    </script>
+    
+    <!-- 实际使用时请取消下面这行注释，并删除上面的临时script -->
+    <!-- <script src="./assets/js/build_url.js"></script> -->
 
     <!-- Footer -->
     <footer id="footer">
