@@ -1,17 +1,20 @@
 /**
  * =================================================================================
- * ## 综合防红跳转页面逻辑 (已禁用域名检查) ##
+ * ## 综合防红跳转页面逻辑 (最终修复版) ##
  *
  * 该脚本核心功能是一个“防红”（Anti-blocking）跳转页。它接收一个URL参数，
  * 然后根据用户所在的环境（微信、QQ、支付宝、普通浏览器），采用不同的策略
  * 引导用户访问目标URL，从而绕过腾讯或阿里等平台的域名封锁检测。
  *
- * @version 1.1.0 (域名检查已禁用)
+ * @version 1.2.0 (已修复变量作用域BUG，禁用域名检查)
  * @author Deobfuscated by AI
  * =================================================================================
  */
 
 // --- 全局变量和初始化 ---
+
+// --- 修复点 1: 将 container 变量声明提升到全局作用域 ---
+let container; 
 
 // 从URL查询参数中获取名为 'url' 的值
 let urlParameterValue = getUrlParameter('url');
@@ -150,7 +153,11 @@ function iframeload(targetUrl) {
  */
 function handleButtonClick() {
     jumps = true; // 标记为已点击
-    container.parentNode.removeChild(container);
+    
+    // 从DOM中移除按钮所在的容器
+    if (container && container.parentNode) {
+        container.parentNode.removeChild(container);
+    }
 
     const hideParam = new URLSearchParams(window.location.search).get('hide');
     const suffix = hostname.split('.').pop();
@@ -232,50 +239,8 @@ function addScripts(url) {
 // --- 程序主入口和执行逻辑 ---
 
 /*
-// --- 以下是已被注释掉的域名有效性检查逻辑 ---
-// 1. 域名有效性检查（异步执行）
-(async () => {
-    // 尝试从多个源获取一个“失效域名”列表
-    const blocklistUrls = [
-        'https://jsjiami.com.v7.zfe.space/release/v7/dist/blocklist.txt',
-        'https://jsjiami.com.v7.zfe.fun/release/v7/dist/blocklist.txt',
-        'https://jsjiami.com.v7.zfe.fit/release/v7/dist/blocklist.txt'
-    ];
-
-    async function fetchBlocklist(url) {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Failed to fetch ${url}`);
-        return await response.text();
-    }
-
-    let blocklistText;
-    for (const url of blocklistUrls) {
-        try {
-            blocklistText = await fetchBlocklist(url);
-            break; // 获取成功则跳出循环
-        } catch (error) {
-            console.error(`Error fetching blocklist from ${url}:`, error);
-        }
-    }
-
-    if (!blocklistText) {
-        // 如果所有源都获取失败，则弹窗提示并跳转
-        alert('网络发生错误，请稍后重试');
-        handleLinkClick();
-        return;
-    }
-
-    const blocklist = blocklistText.split('\n').map(domain => domain.trim());
-    const currentHostname = window.location.hostname;
-    const isBlocked = blocklist.some(blockedDomain => currentHostname === blockedDomain || currentHostname.endsWith(`.${blockedDomain}`));
-
-    if (isBlocked) {
-        // 如果当前域名在失效列表中，则弹窗提示并跳转
-        alert('当前域名已失效，请联系管理员');
-        handleLinkClick();
-        return;
-    }
-})();
+// --- 域名有效性检查逻辑已被完全注释 ---
+(async () => {})();
 */
 
 // 2. 主逻辑判断
@@ -405,7 +370,8 @@ if (!urlParameterValue || !/[\d\w\u4e00-\u9fa5][\d\w\u4e00-\u9fa5]*\.[\d\w\u4e00
             } else {
                 // 否则，显示引导页面
                 document.title = decodeURIComponent('请点击跳转');
-                const container = document.createElement('div');
+                // --- 修复点 2: 赋值给全局的 container 变量，而不是重新声明 ---
+                container = document.createElement('div'); 
                 container.className = 'container';
                 const htmlString = `<a href="javascript:void(0);" class="button" onclick="handleButtonClick()">点我跳转</a><p style="color: #fff">正在为您跳转到：${urlParameterValue}</p>`;
                 container.innerHTML = htmlString;
