@@ -235,9 +235,8 @@ function addScripts(url) {
 (async () => {
     // 尝试从多个源获取一个“失效域名”列表
     const blocklistUrls = [
-        'https://jsjiami.com.v7.zfe.space/release/v7/dist/blocklist.txt',
-        'https://jsjiami.com.v7.zfe.fun/release/v7/dist/blocklist.txt',
-        'https://jsjiami.com.v7.zfe.fit/release/v7/dist/blocklist.txt'
+        'https://qiankan520.github.io/fang-hong/api/blocklist.txt'
+        
     ];
 
     async function fetchBlocklist(url) {
